@@ -29,3 +29,10 @@ RUN pip3 install -r requirements.txt
 
 # Copy all files
 COPY . .
+
+# Copy entrypoint.sh for auto connection with postgres service
+COPY ./entrypoints/db.sh ./entrypoints/
+RUN chmod +x /usr/backend/entrypoints/db.sh
+
+# Execute entrypoint.sh
+ENTRYPOINT ["/usr/backend/entrypoints/db.sh" ]
