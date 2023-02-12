@@ -12,3 +12,6 @@ ENV VIRTUAL_ENV=/opt/venv
 # Switch on virtual environment
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Set the server port
+EXPOSE 8000
