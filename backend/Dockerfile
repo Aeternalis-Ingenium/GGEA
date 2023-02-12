@@ -36,3 +36,6 @@ RUN chmod +x /usr/backend/entrypoints/db.sh
 
 # Execute entrypoint.sh
 ENTRYPOINT ["/usr/backend/entrypoints/db.sh" ]
+
+# Start up the backend server
+CMD uvicorn src.main:app --reload --workers 4 --host 0.0.0.0 --port 8000 
