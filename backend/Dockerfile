@@ -15,3 +15,13 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Set the server port
 EXPOSE 8000
+
+# Install system dependencies
+RUN apt-get update \
+  && apt-get -y install netcat gcc postgresql \
+  && apt-get clean
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt ./
+RUN pip3 install -r requirements.txt
