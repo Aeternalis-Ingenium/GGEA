@@ -110,3 +110,6 @@ services:
       - 8001:8000
     depends_on:
       - ggea_db
+
+volumes:
+  postgresql_ggea_db_data:
