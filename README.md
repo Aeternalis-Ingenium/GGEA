@@ -14,10 +14,10 @@ This web application is a full-stack software developed with:
 
 The URL list for the dockerized application:
 
-* Dockerized DB Editor $\rightarrow$ `http://0.0.0.0:8081`
-* Dockerized Backend API $\rightarrow$ `http://0.0.0.0:8001/api`
-* Dockerized Backend API Dockumentation $\rightarrow$ `http://0.0.0.0:8001/docs`
-* Dockerized Frontend $\rightarrow$ `http://0.0.0.0:3001`
+* Dockerized DB Editor $\rightarrow$ `http://localhost:8081`
+* Dockerized Backend API $\rightarrow$ `http://localhost:8001/api`
+* Dockerized Backend API Dockumentation $\rightarrow$ `http://localhost:8001/docs`
+* Dockerized Frontend $\rightarrow$ `http://localhost:3001`
 
 or the without docker:
 
@@ -45,6 +45,8 @@ Once the above preliminary requirements are fulfilled, follow these steps:
 
 * Step 1: Give permission to the `.sh` files:
 
+    On Mac:
+    
     ```shell
     # One for backend if it exists
     chmod x+ backend/entrypoints/db.sh
@@ -52,6 +54,14 @@ Once the above preliminary requirements are fulfilled, follow these steps:
     # One for frontend if it exists
     chmod x+ frontend/entrypoints/backend.sh
     ```
+    
+    
+    On Windows:
+    
+    * Select the .sh file in VS Code
+    * Change the 'Select End of Line Sequence' in the bottom bar of VS Code from 'CRFL' to 'LF'
+    * Do this with both .sh files
+    
 
 * Step 2: install `pre-commit` for your working environment`
 
