@@ -8,7 +8,6 @@ ROOT_DIR: pathlib.Path = pathlib.Path(__file__).parent.parent.parent.parent.pare
 
 
 class Settings(pydantic.BaseSettings):
-
     TITLE: str = "Gotta Guess'Em All!"
     VERSION: str = "0.1.0"
     TIMEZONE: str = "UTC"
@@ -91,7 +90,6 @@ class Settings(pydantic.BaseSettings):
     PYTORCH_MODEL_FILE_EXTENSION: str = decouple.config("PYTORCH_MODEL_FILE_EXTENSION", cast=str)  # type: ignore
 
     class Config(pydantic.BaseConfig):
-
         case_sensitive: bool = True
         env_file: str = f"{str(ROOT_DIR)}/.env"
         validate_assignment: bool = True
