@@ -19,3 +19,4 @@ requirements-prod.txt
 CONTAINER.md
 README.md
 node_modules/
+docs/

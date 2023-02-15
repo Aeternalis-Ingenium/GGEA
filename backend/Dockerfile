@@ -31,11 +31,12 @@ RUN pip3 install -r requirements.txt
 COPY . .
 
 # Copy entrypoint.sh for auto connection with postgres service
-COPY ./entrypoints/db.sh ./entrypoints/
-RUN chmod +x /usr/backend/entrypoints/db.sh
+COPY ./entrypoints/retry_postgres_dev_server.sh ./entrypoints/retry_postgres_test_server.sh ./entrypoints/
+RUN chmod +x /usr/backend/entrypoints/retry_postgres_dev_server.sh
+RUN chmod +x /usr/backend/entrypoints/retry_postgres_test_server.sh
 
 # Execute entrypoint.sh
-ENTRYPOINT ["/usr/backend/entrypoints/db.sh" ]
+ENTRYPOINT [ "/usr/backend/entrypoints/retry_postgres_dev_server.sh", "/usr/backend/entrypoints/retry_postgres_test_server.sh" ]
 
 # Start up the backend server
-CMD uvicorn src.main:app --reload --workers 4 --host 0.0.0.0 --port 8000
+CMD uvicorn src.main:app --reload --host 0.0.0.0 --port 8000

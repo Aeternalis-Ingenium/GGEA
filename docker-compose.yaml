@@ -1,37 +1,67 @@
 version: '3.9'
 services:
-  ggea_db:
+  ggea_postgres_dev_server:
     image: postgres:latest
-    container_name: ggea_db
+    container_name: ggea_postgres_dev_server
     restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DB=${POSTGRES_DEV_DB}
       - PGDATA=/var/lib/postgresql/data/
     volumes:
-      - postgresql_ggea_db_data:/var/lib/postgresql/data/
+      - postgresql_ggea_postgres_dev_server_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    ports:
+      - 5431:5432
+
+  ggea_postgres_test_server:
+    image: postgres:latest
+    container_name: ggea_postgres_test_server
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_TEST_DB}
     expose:
       - 5432
     ports:
       - 5433:5432
 
-  ggea_db_editor:
+  ggea_dev_db_editor:
     image: adminer
-    container_name: ggea_db_editor
+    container_name: ggea_dev_db_editor
     restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_HOST=${POSTGRES_DEV_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DB=${POSTGRES_DEV_DB}
     expose:
       - 8080
     ports:
       - 8081:8080
     depends_on:
-      - ggea_db
+      - ggea_postgres_dev_server
+
+  ggea_test_db_editor:
+    image: adminer
+    container_name: ggea_test_db_editor
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_TEST_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_TEST_DB}
+    expose:
+      - 8080
+    ports:
+      - 8082:8080
+    depends_on:
+      - ggea_postgres_test_server
 
   ggea_backend:
     container_name: ggea_backend
@@ -42,13 +72,17 @@ services:
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - DEBUG=${DEBUG}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DEV_DB=${POSTGRES_DEV_DB}
+      - POSTGRES_TEST_DB=${POSTGRES_TEST_DB}
       - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DEV_HOST=${POSTGRES_DEV_HOST}
+      - POSTGRES_TEST_HOST=${POSTGRES_TEST_HOST}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_SCHEMA=${POSTGRES_SCHEMA}
       - POSTGRES_USERNAME=${POSTGRES_USERNAME}
       - BACKEND_SERVER_HOST=${BACKEND_SERVER_HOST}
+      - BACKEND_SERVER_DOCKER_HOST=${BACKEND_SERVER_DOCKER_HOST}
       - BACKEND_SERVER_PORT=${BACKEND_SERVER_PORT}
       - BACKEND_SERVER_WORKERS=${BACKEND_SERVER_WORKERS}
       - STATIC_FILE_DIRECTORY=${STATIC_FILE_DIRECTORY}
@@ -56,6 +90,7 @@ services:
       - DB_POOL_SIZE=${DB_POOL_SIZE}
       - DB_MAX_POOL_CON=${DB_MAX_POOL_CON}
       - DB_POOL_OVERFLOW=${DB_POOL_OVERFLOW}
+      - IS_DB_ASYNC_DRIVER=${IS_DB_ASYNC_DRIVER}
       - IS_DB_ECHO_LOG=${IS_DB_ECHO_LOG}
       - IS_DB_EXPIRE_ON_COMMIT=${IS_DB_EXPIRE_ON_COMMIT}
       - IS_DB_FORCE_ROLLBACK=${IS_DB_FORCE_ROLLBACK}
@@ -108,7 +143,8 @@ services:
     ports:
       - 8001:8000
     depends_on:
-      - ggea_db
+      - ggea_postgres_dev_server
+      - ggea_postgres_test_server
 
 volumes:
-  postgresql_ggea_db_data:
+  postgresql_ggea_postgres_dev_server_data:
