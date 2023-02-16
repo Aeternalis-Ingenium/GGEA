@@ -8,10 +8,17 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
+<<<<<<< HEAD
 from src.models.db.base import BaseTable
 
 
 class Profile(BaseTable):
+=======
+# TODO: Import the declarative Base
+
+
+class Profile(Base):
+>>>>>>> 2152472e43a7fe95bed53e3d568d08788055be51
     __tablename__ = "profile"
 
     id: SQLAlchemyMapped[int] = sqlalchemy_mapped_column(primary_key=True, autoincrement="auto")
