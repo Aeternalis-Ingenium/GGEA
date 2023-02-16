@@ -14,10 +14,19 @@ This web application is a full-stack software developed with:
 
 The URL list for the dockerized application:
 
-* Dockerized DB Editor $\rightarrow$ `http://localhost:8081`
-* Dockerized Backend API $\rightarrow$ `http://localhost:8001/api`
-* Dockerized Backend API Dockumentation $\rightarrow$ `http://localhost:8001/docs`
-* Dockerized Frontend $\rightarrow$ `http://localhost:3001`
+    On Mac & Linux:
+
+    * Dockerized DB Editor $\rightarrow$ `http://0.0.0.0:8081`
+    * Dockerized Backend API $\rightarrow$ `http://0.0.0.0:8001/api`
+    * Dockerized Backend API Dockumentation $\rightarrow$ `http://0.0.0.0:8001/docs`
+    * Dockerized Frontend $\rightarrow$ `http://0.0.0.0:3001`
+
+    On Windows
+
+    * Dockerized DB Editor $\rightarrow$ `http://localhost:8081`
+    * Dockerized Backend API $\rightarrow$ `http://localhost:8001/api`
+    * Dockerized Backend API Dockumentation $\rightarrow$ `http://localhost:8001/docs`
+    * Dockerized Frontend $\rightarrow$ `http://localhost:3001`
 
 or the without docker:
 
