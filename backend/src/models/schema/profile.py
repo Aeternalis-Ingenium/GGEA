@@ -2,7 +2,8 @@ import datetime
 
 import pydantic
 
-# TODO: Import the BaseSchemaModel
+from src.models.schema.base import BaseSchemaModel
+
 
 # ? Question:   How is the photo being handled?
 # ?             How do we validate it?
