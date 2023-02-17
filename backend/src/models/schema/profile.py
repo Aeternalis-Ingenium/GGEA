@@ -9,7 +9,6 @@ from src.models.schema.base import BaseSchemaModel
 # ?             How do we validate it?
 # ?             How is it being send to the client?
 
-
 class ProfileInCreate(BaseSchemaModel):
     first_name: str
     last_name: str
