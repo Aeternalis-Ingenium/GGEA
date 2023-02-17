@@ -4,7 +4,6 @@ import pydantic
 
 from src.models.schema.base import BaseSchemaModel
 
-
 # ? Question:   How is the photo being handled?
 # ?             How do we validate it?
 # ?             How is it being send to the client?
