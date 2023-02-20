@@ -8,6 +8,7 @@ from sqlalchemy.sql import functions as sqlalchemy_functions
 from src.models.db.profile import Profile
 from src.models.schema.profile import ProfileInCreate, ProfileInResponse, ProfileInUpdate
 from src.repository.crud.base import BaseCRUDRepository
+from src.utilities.exceptions.database import EntityAlreadyExists, EntityDoesNotExist
 
 
 class AccountCRUDRepository(BaseCRUDRepository):
@@ -20,6 +21,10 @@ class AccountCRUDRepository(BaseCRUDRepository):
         try:
             stmt = sqlalchemy.select(Profile).where(Profile.id == id)
             query = await self.async_session.execute(statement=stmt)
+
+            if not query:
+                raise EntityDoesNotExist
+
             return query.scalar()
         except sqlalchemy_error.DatabaseError as e:
             loguru.logger.error("Error in read_profile_by_id(): %s", e)
