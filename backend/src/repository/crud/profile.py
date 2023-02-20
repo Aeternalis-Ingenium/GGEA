@@ -11,13 +11,12 @@ from src.repository.crud.base import BaseCRUDRepository
 from src.utilities.exceptions.database import EntityAlreadyExists, EntityDoesNotExist
 
 
-class AccountCRUDRepository(BaseCRUDRepository):
+class ProfileCRUDRepository(BaseCRUDRepository):
     async def create_profile(self, profile_create: ProfileInCreate) -> Profile:
         try:
             new_profile = Profile(
                 first_name=profile_create.first_name, last_name=profile_create.last_name, photo=profile_create.photo
             )
-            # TODO: Raising error if entity does already exists
             self.async_session.add(instance=new_profile)
             await self.async_session.commit()
             await self.async_session.refresh(instance=new_profile)
@@ -127,5 +126,31 @@ class AccountCRUDRepository(BaseCRUDRepository):
 
         except sqlalchemy_error.DatabaseError as e:
             loguru.logger.error("Error in update_profile_by_id() while trying to write changes: %s", e)
+            # TODO: Returning custom error message to client
+            raise e
+
+    async def delete_profile_by_id(self, id: int) -> str:
+        try:
+            select_stmt = sqlalchemy.select(Profile).where(Profile.id == id)
+            query = self.async_session.execute(select_stmt)
+            delete_profile = query.scalar()
+        except sqlalchemy_error.DatabaseError as e:
+            loguru.logger.error("Error in delete_profile_by_id() while querying for profile: %s", e)
+            # TODO: Returning custom error message to client
+            raise e
+
+        if not delete_profile:
+            raise EntityDoesNotExist(f"Profile with id '{id}' does not exist!")
+
+        try:
+            delete_stmt = sqlalchemy.delete(Profile).where(Profile.id == delete_profile.id)
+
+            await self.async_session.execute(statement=delete_stmt)
+            await self.async_session.commit()
+
+            return f"Profile with id '{id}' is successfully deleted!"
+
+        except sqlalchemy_error.DatabaseError as e:
+            loguru.logger.error("Error in delete_profile_by_id() while executing delete statement: %s", e)
             # TODO: Returning custom error message to client
             raise e
