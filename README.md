@@ -98,7 +98,7 @@ The default application's settings utilizes the `development` environment. Pleas
     ```
     
     
-#### The next steps are neccessary on the first start of the docker: 
+#### The next steps are necessary on the first start of the docker: 
 
 When first starting the docker, you will get a error message similar to this:
 
@@ -110,7 +110,7 @@ Follow these steps to resolve this issue:
 
 * Step 1: After starting the docker navigate to `http://localhost:8081/`
 
-* Step 2: Change the Database System to -> PostgresSQL and fill in the following credentials
+* Step 2: Change the Database System to -> `PostgresSQL` and fill in the following credentials 
 
     ```shell
     Server: ggea_postgres_dev_server
@@ -123,9 +123,10 @@ Follow these steps to resolve this issue:
     
 * Step 3: Click on 'Create Database'
 
-* Step 4: Insert 'ggea_dev_db' in the empy form field and click save
+* Step 4: Insert 'ggea_dev_db' in the empty form field and click save
 
 * Step 5: Restart your docker. Now it should run without problems!
+* 
 
 #### Optional Steps
 
