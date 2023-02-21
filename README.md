@@ -43,14 +43,14 @@ The default application's settings utilizes the `development` environment. Pleas
 
 # Set Up Guide
 
-Before the step-by-step set up, please ensure that you have:
+#### Before the step-by-step set up, please ensure that you have:
 
 * Docker dashboard, otherwise for Mac users run `brew install --cask docker`,
 * most recent source code, otherwise execute this in your terminal `git pull --rebase origin trunk`,
 * put the `env` file that is uploaded into Slack in the root directory, and
 * rename `env` into `.env`.
 
-Once the above preliminary requirements are fulfilled, follow these steps:
+#### Once the above preliminary requirements are fulfilled, follow these steps:
 
 * Step 1: Give permission to the `.sh` files:
 
@@ -96,6 +96,38 @@ Once the above preliminary requirements are fulfilled, follow these steps:
     ```shell
     docker-compose up
     ```
+    
+    
+#### The next steps are neccessary on the first start of the docker: 
+
+When first starting the docker, you will get a error message similar to this:
+
+    ```shell
+    ggea_backend               | asyncpg.exceptions.InvalidCatalogNameError: database "ggea_dev_db" does not exist
+    ```
+    
+Follow these steps to resolve this issue:
+
+* Step 1: After starting the docker navigate to `http://localhost:8081/`
+
+* Step 2: Change the Database System to -> PostgresSQL and fill in the following credentials
+
+    ```shell
+    Server: ggea_postgres_dev_server
+    User: postgres
+    Password: (insert the value of POSTGRES_PASSWORD of your local .env file)
+    Database: (leave this field blank)
+    ```
+    
+    Now you should be able to login!
+    
+* Step 3: Click on 'Create Database'
+
+* Step 4: Insert 'ggea_dev_db' in the empy form field and click save
+
+* Step 5: Restart your docker. Now it should run without problems!
+
+#### Optional Steps
 
 * Optional Step 1: Always remove your container when updating it:
 
