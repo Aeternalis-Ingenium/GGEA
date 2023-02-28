@@ -9,7 +9,10 @@ from src.models.db.profile import Profile
 from src.models.schema.profile import ProfileInSignup, ProfileInUpdate
 from src.repository.crud.base import BaseCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
+<<<<<<< HEAD
 from src.utility.exceptions.database import DatabaseError
+=======
+>>>>>>> 64ff41f (feat(profiles-endpoints): added get_profiles endpoint for dev purposes)
 
 
 class ProfileCRUDRepository(BaseCRUDRepository):
@@ -33,7 +36,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
     async def read_profiles(self) -> typing.Sequence[Profile]:
         stmt = sqlalchemy.select(Profile)
         query = await self.async_session.execute(statement=stmt)
-        return query.scalars.all()
+        return query.scalars().all()
 
     async def read_profile_by_id(self, id: int) -> Profile:
         try:

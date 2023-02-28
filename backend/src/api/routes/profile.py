@@ -3,14 +3,9 @@ import pydantic
 
 from src.api.dependency.crud import get_crud
 from src.api.dependency.header import get_auth_current_user
-from src.models.schema.profile import ProfileInResponse, ProfileInUpdate, ProfileInCreate
+from src.models.schema.profile import ProfileInCreate, ProfileInResponse, ProfileInUpdate
 from src.repository.crud.profile import ProfileCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
-from src.utility.exceptions.http.exc_404 import (
-    http_404_exc_email_not_found_request,
-    http_404_exc_id_not_found_request,
-    http_404_exc_username_not_found_request,
-)
 
 router = fastapi.APIRouter(prefix="/profiles", tags=["profiles"])
 
@@ -24,8 +19,12 @@ router = fastapi.APIRouter(prefix="/profiles", tags=["profiles"])
 async def get_profiles(
     profile_repo: ProfileCRUDRepository = fastapi.Depends(get_crud(repo_type=ProfileCRUDRepository)),
 ) -> list[ProfileInResponse]:
-    db_profiles = await profile_repo.read_profiles()
     db_profile_list: list = list()
+    try:
+        db_profiles = await profile_repo.read_profiles()
+
+    except EntityDoesNotExist:
+        db_profile_list
 
     for db_profile in db_profiles:
         Profile = ProfileInResponse(
