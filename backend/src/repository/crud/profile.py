@@ -2,7 +2,6 @@ import typing
 
 import loguru
 import sqlalchemy
-from sqlalchemy import exc as sqlalchemy_error
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
 from src.models.db.account import Account
@@ -10,6 +9,7 @@ from src.models.db.profile import Profile
 from src.models.schema.profile import ProfileInSignup, ProfileInUpdate
 from src.repository.crud.base import BaseCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
+from src.utility.exceptions.database import DatabaseError
 
 
 class ProfileCRUDRepository(BaseCRUDRepository):
@@ -25,7 +25,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
             await self.async_session.commit()
             await self.async_session.refresh(instance=new_profile)
             return new_profile
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in create_profile(): %s", e)
             # TODO: Returning custom error message to client
             raise e
@@ -44,7 +44,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
                 raise EntityDoesNotExist
 
             return query.scalar()
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in read_profile_by_id(): %s", e)
             # TODO: Returning custom error message to client
             raise e
@@ -58,7 +58,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
                 raise EntityDoesNotExist
 
             return query.scalar()
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in read_profile_by_first_name(): %s", e)
             # TODO: Returning custom error message to client
             raise e
@@ -72,7 +72,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
                 raise EntityDoesNotExist
 
             return query.scalar()
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in read_profile_by_last_name(): %s", e)
             # TODO: Returning custom error message to client
             raise e
@@ -84,7 +84,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
             stmt = sqlalchemy.select(Profile).where(Profile.id == id)
             query = self.async_session.execute(statement=stmt)
             current_profile = query.scalar()
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in update_profile_by_id() while querying for profile: %s", e)
             # TODO: Returning custom error message to client # type: ignore
             raise e
@@ -128,7 +128,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
 
             return current_profile
 
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in update_profile_by_id() while trying to write changes: %s", e)
             # TODO: Returning custom error message to client
             raise e
@@ -138,7 +138,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
             select_stmt = sqlalchemy.select(Profile).where(Profile.id == id)
             query = self.async_session.execute(select_stmt)
             delete_profile = query.scalar()
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in delete_profile_by_id() while querying for profile: %s", e)
             # TODO: Returning custom error message to client
             raise e
@@ -154,7 +154,7 @@ class ProfileCRUDRepository(BaseCRUDRepository):
 
             return f"Profile with id '{id}' is successfully deleted!"
 
-        except sqlalchemy_error.DatabaseError as e:
+        except DatabaseError as e:
             loguru.logger.error("Error in delete_profile_by_id() while executing delete statement: %s", e)
             # TODO: Returning custom error message to client
             raise e
