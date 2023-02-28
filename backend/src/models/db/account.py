@@ -2,7 +2,7 @@ import datetime
 
 import pydantic
 import sqlalchemy
-from sqlalchemy.orm import Mapped as SQLAlchemyMapped, mapped_column as sqlalchemy_mapped_column
+from sqlalchemy.orm import Mapped as SQLAlchemyMapped, mapped_column as sqlalchemy_mapped_column, relationship as sqlalchemy_relationship
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
 from src.models.db.base import DBBaseTable
@@ -32,6 +32,7 @@ class Account(DBBaseTable):
         nullable=True,
         server_onupdate=sqlalchemy.schema.FetchedValue(for_update=True),
     )
+    profile = sqlalchemy_relationship("Profile", uselist=False, back_populates="account")
 
     __mapper_args__ = {"eager_defaults": True}
 
