@@ -28,8 +28,5 @@ class Profile(DBBaseTable):
         server_onupdate=sqlalchemy.schema.FetchedValue(for_update=True),
         default=None,
     )
-
-
-# TODO: one-to-one relationship between Account and Profil
     account_id: SQLAlchemyMapped[int] = sqlalchemy_mapped_column(sqlalchemy.ForeignKey("account.id"), unique=True)
     account = sqlalchemy_relationship("Account", back_populates="profile")

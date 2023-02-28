@@ -26,9 +26,11 @@ router = fastapi.APIRouter(prefix="/auth", tags=["authentication"])
     response_model=AccountInResponse,
     status_code=fastapi.status.HTTP_201_CREATED,
 )
-async def acount_registration_endpoint(
+async def account_registration_endpoint(
     account_signup: AccountInSignup = fastapi.Body(..., embed=True),
-    account_crud: AccountCRUDRepository = fastapi.Depends(get_crud(repo_type=AccountCRUDRepository)),
+    account_crud: AccountCRUDRepository = fastapi.Depends(get_crud(repo_type=AccountCRUDRepository),
+    profile_crud: Pro
+    ),
 ) -> AccountInResponse:
     is_credential_available = await account_crud.is_credentials_available(account_input=account_signup)
 
@@ -36,6 +38,7 @@ async def acount_registration_endpoint(
         raise await http_exc_400_credentials_bad_signup_request()
 
     new_account = await account_crud.create_account(account_signup=account_signup)
+    new_profile = await 
     jwt_token = jwt_manager.generate_jwt(account=new_account)
     return AccountInResponse(
         authorized_account=AccountWithToken(
