@@ -5,17 +5,21 @@ import sqlalchemy
 from sqlalchemy import exc as sqlalchemy_error
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
+from src.models.db.account import Account
 from src.models.db.profile import Profile
-from src.models.schema.profile import ProfileInCreate, ProfileInUpdate
+from src.models.schema.profile import ProfileInSignup, ProfileInUpdate
 from src.repository.crud.base import BaseCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
 
 
 class ProfileCRUDRepository(BaseCRUDRepository):
-    async def create_profile(self, profile_create: ProfileInCreate) -> Profile:
+    async def create_profile(self, profile_create: ProfileInSignup, parent_account: Account) -> Profile:
         try:
             new_profile = Profile(
-                first_name=profile_create.first_name, last_name=profile_create.last_name, photo=profile_create.photo
+                first_name=profile_create.first_name,
+                last_name=profile_create.last_name,
+                photo=profile_create.photo,
+                account=parent_account,
             )
             self.async_session.add(instance=new_profile)
             await self.async_session.commit()

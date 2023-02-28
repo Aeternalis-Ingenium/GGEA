@@ -9,7 +9,9 @@ from src.models.schema.account import (
     AccountInSignup,
     AccountWithToken,
 )
+from src.models.schema.profile import ProfileInSignup
 from src.repository.crud.account import AccountCRUDRepository
+from src.repository.crud.profile import ProfileCRUDRepository
 from src.security.authorizations.jwt import jwt_manager
 from src.utility.exceptions.custom import EmailAlreadyExists, UsernameAlreadyExists
 from src.utility.exceptions.http.exc_400 import (
@@ -28,9 +30,9 @@ router = fastapi.APIRouter(prefix="/auth", tags=["authentication"])
 )
 async def account_registration_endpoint(
     account_signup: AccountInSignup = fastapi.Body(..., embed=True),
-    account_crud: AccountCRUDRepository = fastapi.Depends(get_crud(repo_type=AccountCRUDRepository),
-    profile_crud: Pro
-    ),
+    profile_signup: ProfileInSignup = fastapi.Body(..., embed=True),
+    account_crud: AccountCRUDRepository = fastapi.Depends(get_crud(repo_type=AccountCRUDRepository)),
+    profile_crud: ProfileCRUDRepository = fastapi.Depends(get_crud(repo_type=ProfileCRUDRepository)),
 ) -> AccountInResponse:
     is_credential_available = await account_crud.is_credentials_available(account_input=account_signup)
 
@@ -38,7 +40,7 @@ async def account_registration_endpoint(
         raise await http_exc_400_credentials_bad_signup_request()
 
     new_account = await account_crud.create_account(account_signup=account_signup)
-    new_profile = await 
+    new_profile = await profile_crud.create_profile(profile_create=profile_signup, parent_account=new_account)
     jwt_token = jwt_manager.generate_jwt(account=new_account)
     return AccountInResponse(
         authorized_account=AccountWithToken(

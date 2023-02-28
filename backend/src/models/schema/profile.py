@@ -9,7 +9,7 @@ from src.models.schema.base import BaseSchemaModel
 # ?             How is it being send to the client?
 
 
-class ProfileInCreate(BaseSchemaModel):
+class ProfileInSignup(BaseSchemaModel):
     first_name: str
     last_name: str
     photo: str | None
