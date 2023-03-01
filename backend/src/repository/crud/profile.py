@@ -9,12 +9,8 @@ from src.models.db.profile import Profile
 from src.models.schema.profile import ProfileInSignup, ProfileInUpdate
 from src.repository.crud.base import BaseCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
-<<<<<<< HEAD
+
 from src.utility.exceptions.database import DatabaseError
-=======
->>>>>>> 64ff41f (feat(profiles-endpoints): added get_profiles endpoint for dev purposes)
-
-
 class ProfileCRUDRepository(BaseCRUDRepository):
     async def create_profile(self, profile_create: ProfileInSignup, parent_account: Account) -> Profile:
         try:
