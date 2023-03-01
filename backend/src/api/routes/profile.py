@@ -33,12 +33,18 @@ async def get_profiles(
         db_profile_list
 
     for db_profile in db_profiles:
-        Profile = ProfileInResponse(
+        profile = ProfileInResponse(
             id=db_profile.id,
             first_name=db_profile.first_name,
             last_name=db_profile.last_name,
+            photo=db_profile.photo,
+            win=db_profile.win,
+            loss=db_profile.loss,
+            mmr=db_profile.mmr,
+            created_at=db_profile.created_at,
+            updated_at=db_profile.updated_at,
         )
-        db_profile_list.append(Profile)
+        db_profile_list.append(profile)
 
     return db_profile_list
 
@@ -52,12 +58,22 @@ async def get_profiles(
 async def update_profile_by_id(
     id: int,
     profile_update: ProfileInUpdate,
-    current_account: Account = fastapi.Depends(get_auth_current_user()),
+    # current_account: Account = fastapi.Depends(get_auth_current_user()),
     profile_repo: ProfileCRUDRepository = fastapi.Depends(get_crud(repo_type=ProfileCRUDRepository)),
 ) -> list[ProfileInResponse]:
-    if id != current_account.id:
-        raise await http_exc_403_forbidden_request()
+    # if id != current_account.id:
+    #     raise await http_exc_403_forbidden_request()
 
     updated_profile = await profile_repo.update_profile_by_id(id, profile_update)
 
-    return ProfileInResponse(**updated_profile)
+    return ProfileInResponse(
+        id=updated_profile.id,
+        first_name=updated_profile.first_name,
+        last_name=updated_profile.last_name,
+        photo=updated_profile.photo,
+        win=updated_profile.win,
+        loss=updated_profile.loss,
+        mmr=updated_profile.mmr,
+        created_at=updated_profile.created_at,
+        updated_at=updated_profile.updated_at,
+    )

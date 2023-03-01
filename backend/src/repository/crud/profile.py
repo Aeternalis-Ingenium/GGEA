@@ -9,8 +9,9 @@ from src.models.db.profile import Profile
 from src.models.schema.profile import ProfileInSignup, ProfileInUpdate
 from src.repository.crud.base import BaseCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
-
 from src.utility.exceptions.database import DatabaseError
+
+
 class ProfileCRUDRepository(BaseCRUDRepository):
     async def create_profile(self, profile_create: ProfileInSignup, parent_account: Account) -> Profile:
         try:
@@ -78,18 +79,10 @@ class ProfileCRUDRepository(BaseCRUDRepository):
 
     async def update_profile_by_id(self, id: int, profile_update: ProfileInUpdate) -> Profile:
         new_profile_data = profile_update.dict()
-
-        try:
-            stmt = sqlalchemy.select(Profile).where(Profile.id == id)
-            query = self.async_session.execute(statement=stmt)
-            current_profile = query.scalar()
-        except DatabaseError as e:
-            loguru.logger.error("Error in update_profile_by_id() while querying for profile: %s", e)
-            # TODO: Returning custom error message to client # type: ignore
-            raise e
+        current_profile = await self.read_profile_by_id(id)
 
         if not current_profile:
-            raise EntityDoesNotExist(f"Profile with id '{id}' does not exists!")
+            raise EntityDoesNotExist(f"Profile with id '{id}' does not exist!")  # type: ignore
 
         update_stmt = (
             sqlalchemy.update(table=Profile)

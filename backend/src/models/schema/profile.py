@@ -33,4 +33,4 @@ class ProfileInResponse(BaseSchemaModel):
     loss: int
     mmr: int
     created_at: datetime.datetime
-    updated_at: datetime.datetime
+    updated_at: datetime.datetime | None

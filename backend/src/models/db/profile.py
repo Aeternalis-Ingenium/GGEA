@@ -10,6 +10,7 @@ from sqlalchemy.sql import functions as sqlalchemy_functions
 
 from src.models.db.base import DBBaseTable
 
+
 class Profile(DBBaseTable):
     __tablename__ = "profile"
 
@@ -19,6 +20,7 @@ class Profile(DBBaseTable):
     photo: SQLAlchemyMapped[str] = sqlalchemy_mapped_column(sqlalchemy.String(length=248), nullable=True)
     win: SQLAlchemyMapped[int] = sqlalchemy_mapped_column(sqlalchemy.Integer(), nullable=False, default=0)
     loss: SQLAlchemyMapped[int] = sqlalchemy_mapped_column(sqlalchemy.Integer(), nullable=False, default=0)
+    mmr: SQLAlchemyMapped[int] = sqlalchemy_mapped_column(sqlalchemy.Integer(), nullable=False, default=80)
     created_at: SQLAlchemyMapped[datetime.datetime] = sqlalchemy_mapped_column(
         sqlalchemy.DateTime(timezone=True), nullable=False, server_default=sqlalchemy_functions.now()
     )
