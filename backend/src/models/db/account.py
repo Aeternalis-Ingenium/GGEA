@@ -2,7 +2,11 @@ import datetime
 
 import pydantic
 import sqlalchemy
-from sqlalchemy.orm import Mapped as SQLAlchemyMapped, mapped_column as sqlalchemy_mapped_column, relationship as sqlalchemy_relationship
+from sqlalchemy.orm import (
+    Mapped as SQLAlchemyMapped,
+    mapped_column as sqlalchemy_mapped_column,
+    relationship as sqlalchemy_relationship,
+)
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
 from src.models.db.base import DBBaseTable
