@@ -9,19 +9,10 @@ from src.models.schema.base import BaseSchemaModel
 # ?             How is it being send to the client?
 
 
-class ProfileInSignup(BaseSchemaModel):
-    first_name: str
-    last_name: str
-    photo: str | None
-
-
 class ProfileInUpdate(BaseSchemaModel):
     first_name: str | None
     last_name: str | None
     photo: str | None
-    win: int | None
-    loss: int | None
-    mmr: int | None
 
 
 class ProfileInResponse(BaseSchemaModel):

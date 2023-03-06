@@ -9,7 +9,6 @@ from src.models.schema.account import (
     AccountInSignup,
     AccountWithToken,
 )
-from src.models.schema.profile import ProfileInSignup
 from src.repository.crud.account import AccountCRUDRepository
 from src.repository.crud.profile import ProfileCRUDRepository
 from src.security.authorizations.jwt import jwt_manager
@@ -30,7 +29,6 @@ router = fastapi.APIRouter(prefix="/auth", tags=["authentication"])
 )
 async def account_registration_endpoint(
     account_signup: AccountInSignup = fastapi.Body(..., embed=True),
-    profile_signup: ProfileInSignup = fastapi.Body(..., embed=True),
     account_crud: AccountCRUDRepository = fastapi.Depends(get_crud(repo_type=AccountCRUDRepository)),
     profile_crud: ProfileCRUDRepository = fastapi.Depends(get_crud(repo_type=ProfileCRUDRepository)),
 ) -> AccountInResponse:
@@ -40,7 +38,7 @@ async def account_registration_endpoint(
         raise await http_exc_400_credentials_bad_signup_request()
 
     new_account = await account_crud.create_account(account_signup=account_signup)
-    new_profile = await profile_crud.create_profile(profile_create=profile_signup, parent_account=new_account)
+    new_profile = await profile_crud.create_profile(parent_account=new_account)
     jwt_token = jwt_manager.generate_jwt(account=new_account)
     return AccountInResponse(
         authorized_account=AccountWithToken(
