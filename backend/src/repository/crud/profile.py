@@ -104,15 +104,6 @@ class ProfileCRUDRepository(BaseCRUDRepository):
         #         #       2. Uploading the photo to somewhere
         #     except:
 
-        if new_profile_data["win"]:
-            update_stmt = update_stmt.values(win=new_profile_data["win"])
-
-        if new_profile_data["loss"]:
-            update_stmt = update_stmt.values(loss=new_profile_data["loss"])
-
-        if new_profile_data["mmr"]:
-            update_stmt = update_stmt.values(mmr=new_profile_data["mmr"])
-
         try:
             await self.async_session.execute(statement=update_stmt)
             await self.async_session.commit()

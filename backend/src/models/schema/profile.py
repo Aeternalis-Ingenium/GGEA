@@ -19,9 +19,6 @@ class ProfileInUpdate(BaseSchemaModel):
     first_name: str | None
     last_name: str | None
     photo: str | None
-    win: int | None
-    loss: int | None
-    mmr: int | None
 
 
 class ProfileInResponse(BaseSchemaModel):
