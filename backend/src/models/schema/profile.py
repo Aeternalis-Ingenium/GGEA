@@ -17,9 +17,9 @@ class ProfileInUpdate(BaseSchemaModel):
 
 class ProfileInResponse(BaseSchemaModel):
     id: int
-    first_name: str
-    last_name: str
-    photo: str
+    first_name: str | None
+    last_name: str | None
+    photo: str | None
     win: int
     loss: int
     mmr: int
