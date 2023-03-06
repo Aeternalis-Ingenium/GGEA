@@ -55,6 +55,11 @@ class AccountInResponse(BaseSchemaModel):
     authorized_account: AccountWithToken
 
 
+class AccountInSignupResponse(BaseSchemaModel):
+    authorized_account: AccountWithToken
+    is_profile_created: bool
+
+
 class AccountInSignoutResponse(BaseSchemaModel):
     username: str
     is_logged_out: bool

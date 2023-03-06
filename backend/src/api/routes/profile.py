@@ -5,7 +5,7 @@ import pydantic
 from src.api.dependency.crud import get_crud
 from src.api.dependency.header import get_auth_current_user
 from src.models.db.account import Account
-from src.models.schema.profile import ProfileInResponse, ProfileInSignup, ProfileInUpdate
+from src.models.schema.profile import ProfileInResponse, ProfileInUpdate
 from src.repository.crud.profile import ProfileCRUDRepository
 from src.utility.exceptions.custom import EntityDoesNotExist
 from src.utility.exceptions.database import DatabaseError

@@ -7,6 +7,7 @@ from src.models.schema.account import (
     AccountInSignout,
     AccountInSignoutResponse,
     AccountInSignup,
+    AccountInSignupResponse,
     AccountWithToken,
 )
 from src.repository.crud.account import AccountCRUDRepository
@@ -40,10 +41,11 @@ async def account_registration_endpoint(
     new_account = await account_crud.create_account(account_signup=account_signup)
     new_profile = await profile_crud.create_profile(parent_account=new_account)
     jwt_token = jwt_manager.generate_jwt(account=new_account)
-    return AccountInResponse(
+    return AccountInSignupResponse(
         authorized_account=AccountWithToken(
             token=jwt_token, hashed_password=new_account.hashed_password, **new_account.__dict__
-        )
+        ),
+        is_profile_created=True if new_profile else False,
     )
 
 
